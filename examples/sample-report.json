@@ -1,0 +1,191 @@
+{
+  "format": "ai-risk-review",
+  "schema_version": 1,
+  "app_version": "0.2.0",
+  "created_at": "2026-10-19T23:48:47.998108+00:00",
+  "scope": "This Windows computer, current user and explicitly selected checks. Not an organization-wide assessment.",
+  "observations": [
+    {
+      "kind": "installed",
+      "service": "Ollama",
+      "evidence": "DEMO: Ollama installed record."
+    },
+    {
+      "kind": "installed",
+      "service": "Claude",
+      "evidence": "DEMO: Claude installed record."
+    },
+    {
+      "kind": "installed",
+      "service": "LM Studio",
+      "evidence": "DEMO: LM Studio installed record."
+    },
+    {
+      "kind": "package",
+      "service": "Claude",
+      "evidence": "DEMO: current-user Claude package record."
+    },
+    {
+      "kind": "running",
+      "service": "ChatGPT",
+      "count": 1,
+      "evidence": "DEMO: ChatGPT running process, no listener required."
+    },
+    {
+      "kind": "running",
+      "service": "Codex",
+      "count": 1,
+      "evidence": "DEMO: Codex running process, no listener required."
+    },
+    {
+      "kind": "listener",
+      "service": "Ollama",
+      "confirmed": true,
+      "port": 11434,
+      "address": "0.0.0.0",
+      "evidence": "DEMO: recognized Ollama process on TCP 0.0.0.0:11434."
+    },
+    {
+      "kind": "integration",
+      "service": "Claude Desktop",
+      "name": "demo-connection",
+      "evidence": "DEMO: one configured MCP connection. Not an observation of this computer."
+    }
+  ],
+  "inventory": [
+    {
+      "service": "ChatGPT",
+      "sources": [
+        "running"
+      ],
+      "evidence": [
+        "DEMO: ChatGPT running process, no listener required."
+      ]
+    },
+    {
+      "service": "Claude",
+      "sources": [
+        "installed",
+        "package",
+        "integration"
+      ],
+      "evidence": [
+        "DEMO: Claude installed record.",
+        "DEMO: current-user Claude package record.",
+        "DEMO: one configured MCP connection. Not an observation of this computer."
+      ]
+    },
+    {
+      "service": "Codex",
+      "sources": [
+        "running"
+      ],
+      "evidence": [
+        "DEMO: Codex running process, no listener required."
+      ]
+    },
+    {
+      "service": "LM Studio",
+      "sources": [
+        "installed"
+      ],
+      "evidence": [
+        "DEMO: LM Studio installed record."
+      ]
+    },
+    {
+      "service": "Ollama",
+      "sources": [
+        "installed",
+        "listener"
+      ],
+      "evidence": [
+        "DEMO: Ollama installed record.",
+        "DEMO: recognized Ollama process on TCP 0.0.0.0:11434."
+      ]
+    }
+  ],
+  "coverage": [
+    {
+      "id": "installed",
+      "status": "complete",
+      "detail": "Illustrative demo records. This computer was not inspected."
+    },
+    {
+      "id": "packages",
+      "status": "complete",
+      "detail": "Illustrative demo records. This computer was not inspected."
+    },
+    {
+      "id": "running",
+      "status": "complete",
+      "detail": "Illustrative demo records. This computer was not inspected."
+    },
+    {
+      "id": "listeners",
+      "status": "complete",
+      "detail": "Illustrative demo records. This computer was not inspected."
+    },
+    {
+      "id": "integrations",
+      "status": "complete",
+      "detail": "Illustrative demo records. This computer was not inspected."
+    },
+    {
+      "id": "locations",
+      "status": "skipped",
+      "detail": "Illustrative demo records. This computer was not inspected."
+    }
+  ],
+  "context": {
+    "work_use": "yes",
+    "policy": "no",
+    "sensitive_data": "unsure"
+  },
+  "findings": [
+    {
+      "id": "bind:Ollama:11434:0.0.0.0",
+      "title": "Ollama listens beyond loopback",
+      "priority": "Review",
+      "basis": "Observed",
+      "source": "listeners",
+      "evidence": "DEMO: recognized Ollama process on TCP 0.0.0.0:11434.",
+      "explanation": "The listening address is not restricted to the local loopback interface.",
+      "limitation": "Reachability from another device, firewall rules, internet exposure and authentication were not tested.",
+      "action": "If remote access is unnecessary, ask the service owner to restrict the listening address to loopback. Otherwise review firewall restrictions and authentication. Do not change a shared service without its owner.",
+      "verification": "Run this check again and confirm the intended binding. Ask IT to validate required remote access separately."
+    },
+    {
+      "id": "mcp:Claude Desktop:demo-connection",
+      "title": "Review a configured connection in Claude Desktop",
+      "priority": "Context needed",
+      "basis": "Observed",
+      "source": "integrations",
+      "evidence": "DEMO: one configured MCP connection. Not an observation of this computer.",
+      "explanation": "An MCP connection is configured. These connections can extend an assistant\u2019s capabilities.",
+      "limitation": "Configuration does not prove the connection is running, has broad permissions, or is unsafe. Command arguments, environment values, tokens and conversation contents are not included in this report.",
+      "action": "Confirm this connection is expected and identify its owner. Review the actual permissions and allowed actions in the client and server settings.",
+      "verification": "Record the owner and permission review. A rescan can confirm configuration presence, not that permissions are appropriate."
+    },
+    {
+      "id": "policy-review",
+      "title": "Document permitted work use of AI",
+      "priority": "Review",
+      "basis": "Reported",
+      "source": "context",
+      "evidence": "You reported work use of AI and no agreed rules for that use.",
+      "explanation": "People may make different decisions about information sharing and output verification.",
+      "limitation": "This comes from your answers. The app did not inspect business policies or establish a legal obligation.",
+      "action": "Agree which tools and data types are permitted, who approves exceptions and when outputs need human checking.",
+      "verification": "Keep the approved rules and confirm that relevant people received them."
+    }
+  ],
+  "limitations": [
+    "Installed software or configuration does not establish actual use, ownership, approval or sensitive data handling.",
+    "Browser-only AI, private accounts, remote hosts, unsupported applications and other users may be outside visibility.",
+    "No subnet scan, exploit, inference request or production change is performed.",
+    "Findings are automated checkup results, not professional sign-off, compliance certification or insurance advice.",
+    "No observed findings does not mean the computer or business is secure. Check the collection coverage."
+  ],
+  "demo": true
+}
