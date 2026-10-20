@@ -43,8 +43,11 @@ def parse_packages(value):
     for item in rows(value,('Name','Version')):
         label=PACKAGES.get(str(item['Name']).lower())
         if label:
+            version = str(item['Version'])
+            version = version if re.fullmatch(r'\d[\d.\-]{0,59}', version) else 'not extracted'
             result.append({'kind':'package','service':label,
-                'evidence':f'Recognized current-user Windows package name: {item["Name"]}. Installation record only; actual use and approval are unknown.'})
+                'version':version,
+                'evidence':f'Recognized current-user Windows package name: {item["Name"]}; version {version}. Installation record only; actual use and approval are unknown.'})
     return result
 
 
@@ -163,16 +166,36 @@ def extract_integrations(data, app):
     if not isinstance(servers,dict): raise ValueError('Unrecognized MCP configuration structure.')
     if len(servers)>200: raise ValueError('Too many entries for a bounded configuration check.')
     result=[]
-    for name, config in servers.items():
+    for index, (name, config) in enumerate(servers.items(), 1):
         if not isinstance(config,dict): continue
-        # Deliberately export only presence and a connection type. No arbitrary names,
-        # arguments, URL paths, query parameters, headers or environment values.
+        # Extract allowlisted facts only. Never export arbitrary strings from config.
         connection = 'local command' if 'command' in config else 'remote URL' if 'url' in config else 'unspecified'
-        index = len(result)+1
         stable_id=hashlib.sha256(str(name).encode('utf-8')).hexdigest()[:20]
-        state='explicitly disabled' if config.get('enabled') is False or config.get('disabled') is True else 'activation state not verified'
+        # Only interpret settings whose semantics are known for this client.
+        # For example, VS Code keeps enable/disable state outside this JSON.
+        state='explicitly disabled' if app == 'Codex' and config.get('enabled') is False else 'activation state not verified'
+        from urllib.parse import urlsplit
+        scheme='not configured'; credentials=False
+        if isinstance(config.get('url'),str):
+            try:
+                parsed=urlsplit(config['url'])
+                scheme=parsed.scheme.lower() if parsed.scheme.lower() in ('http','https') else 'other / unspecified'
+                credentials=parsed.username is not None or parsed.password is not None
+            except ValueError:scheme='unparseable'
+        auth=any(key in config for key in ('headers','http_headers','env_http_headers','bearer_token_env_var','oauth'))
+        allowed=config.get('enabled_tools');blocked=config.get('disabled_tools')
+        allowed_count=len(allowed) if isinstance(allowed,list) else None
+        blocked_count=len(blocked) if isinstance(blocked,list) else None
+        reference={'Claude Desktop':'%APPDATA%/Claude/claude_desktop_config.json → mcpServers',
+                   'Cursor':'%USERPROFILE%/.cursor/mcp.json → mcpServers',
+                   'VS Code':'%APPDATA%/Code/User/mcp.json → servers',
+                   'Windsurf':'%USERPROFILE%/.codeium/windsurf/mcp_config.json → mcpServers',
+                   'Codex':'CODEX_HOME/config.toml (default %USERPROFILE%/.codex/config.toml) → mcp_servers'}.get(app,'client MCP settings')
         result.append({'kind':'integration','service':app,'name':f'connection-{stable_id}',
-                       'evidence':f'{app}: configured MCP connection {index} ({connection}; {state}). Connection identity and permission scope were not extracted.'})
+                       'entry_index':index,'transport':connection,'enabled_state':state,
+                       'config_reference':reference,'url_scheme':scheme,'url_credentials_present':credentials,
+                       'auth_material_configured':auth,'enabled_tools_count':allowed_count,'disabled_tools_count':blocked_count,
+                       'evidence':f'{app}: declared MCP entry {index} in {reference}; {connection}; {state}; URL scheme: {scheme}; URL user-info present: {credentials}; auth-related setting present: {auth}; enabled_tools list count: {allowed_count}; disabled_tools list count: {blocked_count}. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded.'})
     return result
 
 

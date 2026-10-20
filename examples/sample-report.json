@@ -1,41 +1,47 @@
 {
   "format": "ai-risk-review",
   "schema_version": 1,
-  "app_version": "0.2.0",
-  "created_at": "2026-10-19T23:48:47.998108+00:00",
+  "app_version": "0.3.0",
+  "created_at": "2026-10-20T00:11:32.373108+00:00",
   "scope": "This Windows computer, current user and explicitly selected checks. Not an organization-wide assessment.",
   "observations": [
     {
       "kind": "installed",
       "service": "Ollama",
-      "evidence": "DEMO: Ollama installed record."
+      "evidence": "DEMO: Ollama installed record.",
+      "id": "obs-001"
     },
     {
       "kind": "installed",
       "service": "Claude",
-      "evidence": "DEMO: Claude installed record."
+      "evidence": "DEMO: Claude installed record.",
+      "id": "obs-002"
     },
     {
       "kind": "installed",
       "service": "LM Studio",
-      "evidence": "DEMO: LM Studio installed record."
+      "evidence": "DEMO: LM Studio installed record.",
+      "id": "obs-003"
     },
     {
       "kind": "package",
       "service": "Claude",
-      "evidence": "DEMO: current-user Claude package record."
+      "evidence": "DEMO: current-user Claude package record.",
+      "id": "obs-004"
     },
     {
       "kind": "running",
       "service": "ChatGPT",
       "count": 1,
-      "evidence": "DEMO: ChatGPT running process, no listener required."
+      "evidence": "DEMO: ChatGPT running process, no listener required.",
+      "id": "obs-005"
     },
     {
       "kind": "running",
       "service": "Codex",
       "count": 1,
-      "evidence": "DEMO: Codex running process, no listener required."
+      "evidence": "DEMO: Codex running process, no listener required.",
+      "id": "obs-006"
     },
     {
       "kind": "listener",
@@ -43,13 +49,24 @@
       "confirmed": true,
       "port": 11434,
       "address": "0.0.0.0",
-      "evidence": "DEMO: recognized Ollama process on TCP 0.0.0.0:11434."
+      "evidence": "DEMO: recognized Ollama process on TCP 0.0.0.0:11434.",
+      "id": "obs-007"
     },
     {
       "kind": "integration",
       "service": "Claude Desktop",
-      "name": "demo-connection",
-      "evidence": "DEMO: one configured MCP connection. Not an observation of this computer."
+      "name": "connection-226b2d0bcd2477b35a7c",
+      "entry_index": 1,
+      "transport": "local command",
+      "enabled_state": "activation state not verified",
+      "config_reference": "%APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers",
+      "url_scheme": "not configured",
+      "url_credentials_present": false,
+      "auth_material_configured": false,
+      "enabled_tools_count": null,
+      "disabled_tools_count": null,
+      "evidence": "Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related setting present: False; enabled_tools list count: None; disabled_tools list count: None. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded.",
+      "id": "obs-008"
     }
   ],
   "inventory": [
@@ -72,7 +89,7 @@
       "evidence": [
         "DEMO: Claude installed record.",
         "DEMO: current-user Claude package record.",
-        "DEMO: one configured MCP connection. Not an observation of this computer."
+        "Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related setting present: False; enabled_tools list count: None; disabled_tools list count: None. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded."
       ]
     },
     {
@@ -133,14 +150,16 @@
     },
     {
       "id": "locations",
-      "status": "skipped",
+      "status": "complete",
       "detail": "Illustrative demo records. This computer was not inspected."
     }
   ],
   "context": {
     "work_use": "yes",
     "policy": "no",
-    "sensitive_data": "unsure"
+    "sensitive_data": "yes",
+    "nyc": "yes",
+    "employment": "yes"
   },
   "findings": [
     {
@@ -153,19 +172,25 @@
       "explanation": "The listening address is not restricted to the local loopback interface.",
       "limitation": "Reachability from another device, firewall rules, internet exposure and authentication were not tested.",
       "action": "If remote access is unnecessary, ask the service owner to restrict the listening address to loopback. Otherwise review firewall restrictions and authentication. Do not change a shared service without its owner.",
-      "verification": "Run this check again and confirm the intended binding. Ask IT to validate required remote access separately."
+      "verification": "Run this check again and confirm the intended binding. Ask IT to validate required remote access separately.",
+      "evidence_ids": [
+        "obs-007"
+      ]
     },
     {
-      "id": "mcp:Claude Desktop:demo-connection",
-      "title": "Review a configured connection in Claude Desktop",
+      "id": "mcp:Claude Desktop:connection-226b2d0bcd2477b35a7c",
+      "title": "Review local command connection in Claude Desktop (1)",
       "priority": "Context needed",
       "basis": "Observed",
       "source": "integrations",
-      "evidence": "DEMO: one configured MCP connection. Not an observation of this computer.",
+      "evidence": "Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related setting present: False; enabled_tools list count: None; disabled_tools list count: None. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded.",
       "explanation": "An MCP connection is configured. These connections can extend an assistant\u2019s capabilities.",
       "limitation": "Configuration does not prove the connection is running, has broad permissions, or is unsafe. Command arguments, environment values, tokens and conversation contents are not included in this report.",
-      "action": "Confirm this connection is expected and identify its owner. Review the actual permissions and allowed actions in the client and server settings.",
-      "verification": "Record the owner and permission review. A rescan can confirm configuration presence, not that permissions are appropriate."
+      "action": "Open %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers and locate entry 1 in the declared server table (file order, not sorted display order). Confirm its owner, purpose, allowed tools, data destinations and approval settings. Review command arguments locally; do not paste credentials into the report.",
+      "verification": "Record the owner and permission review. A rescan can confirm configuration presence, not that permissions are appropriate.",
+      "evidence_ids": [
+        "obs-008"
+      ]
     },
     {
       "id": "policy-review",
@@ -177,15 +202,732 @@
       "explanation": "People may make different decisions about information sharing and output verification.",
       "limitation": "This comes from your answers. The app did not inspect business policies or establish a legal obligation.",
       "action": "Agree which tools and data types are permitted, who approves exceptions and when outputs need human checking.",
-      "verification": "Keep the approved rules and confirm that relevant people received them."
+      "verification": "Keep the approved rules and confirm that relevant people received them.",
+      "evidence_ids": []
+    },
+    {
+      "id": "data-review",
+      "title": "Check the conditions for sensitive information",
+      "priority": "Review",
+      "basis": "Reported",
+      "source": "context",
+      "evidence": "You reported entering sensitive information into AI tools for work.",
+      "explanation": "The appropriate treatment depends on the product, account tier, settings, contracts and information involved.",
+      "limitation": "The app did not read your inputs or vendor contracts. It has not established that a disclosure or breach occurred.",
+      "action": "Have the responsible owner confirm permitted information, retention, training settings and contractual protections before further sensitive use.",
+      "verification": "Retain the approval decision and relevant settings evidence; obtain specialist advice for restricted data.",
+      "evidence_ids": []
     }
   ],
+  "crosswalk": {
+    "catalog": {
+      "id": "us-readiness-2026-10-19",
+      "reviewed_at": "2026-10-19",
+      "review_due": "2026-11-18",
+      "freshness": "Within scheduled review window",
+      "exhaustive": false,
+      "coverage": "12 selected U.S. framework / policy / legal-source entries; 12 authored evidence work packages. Not the complete NIST framework or a complete legal crosswalk.",
+      "excluded": "Other state and local laws, education / FERPA, credit / ECOA / FCRA, insurance rules, children / COPPA, biometrics, medical-device rules, frontier-model rules, national-security uses, contracts and internal policies are not comprehensively mapped. International standards used in the U.S., including ISO/IEC 42001, are not mapped.",
+      "update_mode": "Bundled offline snapshot. No live legal update check; review primary sources and implementing rules before reliance. A review window is not a guarantee sources remain current.",
+      "mapping_basis": "Mappings are authored readiness aids, not official NIST equivalences, legal opinions, audits or compliance determinations."
+    },
+    "sources": [
+      {
+        "id": "nist-rmf",
+        "title": "NIST AI RMF 1.0",
+        "kind": "Voluntary framework",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "scope": "Optional cross-sector risk-management baseline; adoption may also be contractual.",
+        "status": "Published baseline; NIST states a revision is in progress.",
+        "controls": [],
+        "provision": "GOVERN, MAP, MEASURE and MANAGE subcategories",
+        "reviewed_at": "2026-10-19",
+        "applicability": "Optional baseline",
+        "reason": "Use as a voluntary readiness reference; confirm GenAI scope where relevant."
+      },
+      {
+        "id": "nist-genai",
+        "title": "NIST AI 600-1: Generative AI Profile",
+        "kind": "Voluntary framework",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "scope": "Companion profile when the use involves generative AI; confirm the system type.",
+        "status": "Published July 2024; companion to AI RMF, not a certification.",
+        "controls": [
+          "use-cases",
+          "vendors",
+          "testing",
+          "privacy",
+          "monitoring"
+        ],
+        "provision": "Sections 2\u20133: GenAI risks and suggested actions (topic-level mapping)",
+        "reviewed_at": "2026-10-19",
+        "applicability": "Optional baseline",
+        "reason": "Use as a voluntary readiness reference; confirm GenAI scope where relevant."
+      },
+      {
+        "id": "omb-25-21",
+        "title": "OMB M-25-21: Federal use of AI",
+        "kind": "Federal agency policy",
+        "url": "https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf",
+        "scope": "Federal agency AI use; contractors must examine agency instructions and contract terms.",
+        "status": "April 2025 memo; replaces M-24-10. Confirm agency scope, exceptions and current implementing policy.",
+        "controls": [
+          "inventory",
+          "ownership",
+          "use-cases",
+          "testing",
+          "human-review",
+          "monitoring"
+        ],
+        "provision": "AI governance and high-impact AI risk-management provisions (topic-level mapping)",
+        "reviewed_at": "2026-10-19",
+        "applicability": "Needs context",
+        "reason": "Required screening answers are missing or unsure; do not infer non-applicability."
+      },
+      {
+        "id": "omb-25-22",
+        "title": "OMB M-25-22: Federal AI acquisition",
+        "kind": "Federal agency policy",
+        "url": "https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-22-Driving-Efficient-Acquisition-of-Artificial-Intelligence-in-Government.pdf",
+        "scope": "Federal AI acquisition; not a general private-business requirement.",
+        "status": "April 2025 memo; replaces M-24-18. Check procurement and contract-specific clauses.",
+        "controls": [
+          "vendors",
+          "use-cases",
+          "monitoring"
+        ],
+        "provision": "Acquisition, competition, interoperability and risk provisions (topic-level mapping)",
+        "reviewed_at": "2026-10-19",
+        "applicability": "Needs context",
+        "reason": "Required screening answers are missing or unsure; do not infer non-applicability."
+      },
+      {
+        "id": "omb-26-04",
+        "title": "OMB M-26-04: Unbiased AI principles",
+        "kind": "Federal agency policy",
+        "url": "https://www.whitehouse.gov/wp-content/uploads/2025/12/M-26-04-Increasing-Public-Trust-in-Artificial-Intelligence-Through-Unbiased-AI-Principles.pdf",
+        "scope": "Covered federal procurement of large language models; examine exceptions and contract applicability.",
+        "status": "December 2025 memo; includes a two-year sunset unless OMB provides otherwise. Assess current status and other applicable federal AI instructions.",
+        "controls": [
+          "vendors",
+          "testing"
+        ],
+        "provision": "Contract requirements and Appendix A implementation guidance (topic-level mapping)",
+        "reviewed_at": "2026-10-19",
+        "applicability": "Needs context",
+        "reason": "Required screening answers are missing or unsure; do not infer non-applicability."
+      },
+      {
+        "id": "ftc",
+        "title": "FTC: AI consumer-protection enforcement",
+        "kind": "Existing law / agency guidance",
+        "url": "https://www.ftc.gov/industry/technology/artificial-intelligence",
+        "scope": "Consumer-facing AI and AI claims; FTC jurisdiction and other statutory limits require review.",
+        "status": "Existing consumer-protection law can apply to AI. The linked enforcement hub is not a standalone AI statute.",
+        "controls": [
+          "policy",
+          "testing",
+          "privacy",
+          "human-review"
+        ],
+        "provision": "Truthful claims, privacy and consumer harm (issue-level mapping)",
+        "reviewed_at": "2026-10-19",
+        "applicability": "Needs context",
+        "reason": "Required screening answers are missing or unsure; do not infer non-applicability."
+      },
+      {
+        "id": "eeoc",
+        "title": "Federal employment law: AI and the ADA",
+        "kind": "Existing law / agency guidance",
+        "url": "https://www.eeoc.gov/eeoc-disability-related-resources/artificial-intelligence-and-ada",
+        "scope": "AI in employment; assess covered-entity thresholds, disability accommodation and other employment laws.",
+        "status": "Existing employment protections; this entry focuses on ADA resources, not all employment obligations.",
+        "controls": [
+          "fairness",
+          "human-review",
+          "testing"
+        ],
+        "provision": "AI assessment and disability / accommodation resources (issue-level mapping)",
+        "reviewed_at": "2026-10-19",
+        "applicability": "Potentially relevant",
+        "reason": "Screening answers match a review trigger; statutory definitions, thresholds, roles, exceptions and dates still need qualified review."
+      },
+      {
+        "id": "hipaa",
+        "title": "HIPAA: Cloud processing and business associates",
+        "kind": "Existing law / agency guidance",
+        "url": "https://www.hhs.gov/hipaa/for-professionals/special-topics/health-information-technology/cloud-computing/index.html",
+        "scope": "HIPAA covered entities / business associates and ePHI processing; health-related data alone does not establish HIPAA scope.",
+        "status": "Existing HIPAA obligations; confirm entity, data, service role and any required BAA.",
+        "controls": [
+          "privacy",
+          "vendors",
+          "monitoring"
+        ],
+        "provision": "HHS cloud guidance, questions 1\u20132 (issue-level mapping)",
+        "reviewed_at": "2026-10-19",
+        "applicability": "Needs context",
+        "reason": "Required screening answers are missing or unsure; do not infer non-applicability."
+      },
+      {
+        "id": "co-admt",
+        "title": "Colorado SB26-189: ADMT",
+        "kind": "State law / upcoming duties",
+        "url": "https://www.leg.colorado.gov/bills/SB26-189",
+        "scope": "Covered developers / deployers and ADMT materially influencing consequential decisions involving Colorado.",
+        "status": "Enacted May 2026; repeals and reenacts earlier provisions. The legislative summary identifies duties starting January 1, 2027. Confirm signed text, rules and exemptions.",
+        "controls": [
+          "use-cases",
+          "vendors",
+          "human-review",
+          "monitoring"
+        ],
+        "provision": "Enacted-act summary: documentation, notice, human review and records (topic-level mapping)",
+        "reviewed_at": "2026-10-19",
+        "applicability": "Needs context",
+        "reason": "Required screening answers are missing or unsure; do not infer non-applicability."
+      },
+      {
+        "id": "ca-admt",
+        "title": "California CCPA: ADMT and risk-assessment regulations",
+        "kind": "State regulations / phased duties",
+        "url": "https://cppa.ca.gov/regulations/ccpa_updates.html",
+        "scope": "Covered CCPA businesses and regulated processing / ADMT; thresholds, exemptions and specific use are unresolved.",
+        "status": "Regulations effective January 1, 2026; ADMT Article 11 compliance starts January 1, 2027. Other deadlines vary, including phased cybersecurity audits. Confirm the relevant provision.",
+        "controls": [
+          "use-cases",
+          "privacy",
+          "human-review",
+          "testing"
+        ],
+        "provision": "Approved text Articles 9\u201311; ADMT \u00a77200 and notice \u00a77220 (topic-level mapping)",
+        "reviewed_at": "2026-10-19",
+        "applicability": "Needs context",
+        "reason": "Required screening answers are missing or unsure; do not infer non-applicability."
+      },
+      {
+        "id": "tx-traiga",
+        "title": "Texas HB149: Responsible AI Governance Act",
+        "kind": "State law",
+        "url": "https://capitol.texas.gov/billlookup/BillSummary.aspx?Bill=HB149&LegSess=89R",
+        "scope": "AI development / deployment with Texas nexus; review entity, use, exceptions and specific disclosure triggers.",
+        "status": "Effective January 1, 2026. Different provisions apply to different actors and uses.",
+        "controls": [
+          "use-cases",
+          "fairness",
+          "human-review",
+          "privacy"
+        ],
+        "provision": "Enrolled-bill summary: prohibited uses and specified disclosures (topic-level mapping)",
+        "reviewed_at": "2026-10-19",
+        "applicability": "Needs context",
+        "reason": "Required screening answers are missing or unsure; do not infer non-applicability."
+      },
+      {
+        "id": "nyc-aedt",
+        "title": "NYC Local Law 144: Automated employment decision tools",
+        "kind": "Local law and rules",
+        "url": "https://www.nyc.gov/site/dca/about/automated-employment-decision-tools.page",
+        "scope": "Covered employer / employment agency use of a defined AEDT; job nexus and tool definition need review.",
+        "status": "Enforcement began July 2023; annual independent bias audit, public information and notices for covered use.",
+        "controls": [
+          "fairness",
+          "human-review",
+          "monitoring"
+        ],
+        "provision": "DCWP law / rule overview and FAQ (topic-level mapping)",
+        "reviewed_at": "2026-10-19",
+        "applicability": "Potentially relevant",
+        "reason": "Screening answers match a review trigger; statutory definitions, thresholds, roles, exceptions and dates still need qualified review."
+      }
+    ],
+    "controls": [
+      {
+        "id": "inventory",
+        "title": "AI system inventory",
+        "status": "Partial local evidence",
+        "owner": "AI program owner",
+        "evidence": [
+          "obs-001: DEMO: Ollama installed record.",
+          "obs-002: DEMO: Claude installed record.",
+          "obs-003: DEMO: LM Studio installed record.",
+          "obs-004: DEMO: current-user Claude package record.",
+          "obs-005: DEMO: ChatGPT running process, no listener required.",
+          "obs-006: DEMO: Codex running process, no listener required.",
+          "obs-007: DEMO: recognized Ollama process on TCP 0.0.0.0:11434.",
+          "obs-008: Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related setting present: False; enabled_tools list count: None; disabled_tools list count: None. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded."
+        ],
+        "evidence_ids": [
+          "obs-001",
+          "obs-002",
+          "obs-003",
+          "obs-004",
+          "obs-005",
+          "obs-006",
+          "obs-007",
+          "obs-008"
+        ],
+        "needed": "Reconcile discovered tools with browser services, APIs, plugins, other devices and business systems; name an owner and approval state for every AI use.",
+        "deliverable": "An owner-reviewed inventory with product, version, use, users, data categories, vendor, connections, approval and review date.",
+        "verification": "Sample actual work processes against the register; resolve unexplained tools and record coverage gaps.",
+        "mappings": [
+          {
+            "source_id": "nist-rmf",
+            "provision": "GOVERN 1.6",
+            "relationship": "Partial supporting evidence only"
+          },
+          {
+            "source_id": "omb-25-21",
+            "provision": "AI governance and high-impact AI risk-management provisions (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          }
+        ]
+      },
+      {
+        "id": "policy",
+        "title": "Permitted use and exceptions",
+        "status": "Reported gap",
+        "owner": "Business owner",
+        "evidence": [
+          "User answer policy: no. Self-reported; no supporting document was inspected."
+        ],
+        "evidence_ids": [],
+        "needed": "Obtain approved AI-use rules, prohibited data / uses and an exception process.",
+        "deliverable": "A dated approved policy, exception register and acknowledgement records.",
+        "verification": "Check approval, current version and whether sampled users can follow the rules.",
+        "mappings": [
+          {
+            "source_id": "nist-rmf",
+            "provision": "GOVERN 1.4",
+            "relationship": "Partial supporting evidence only"
+          },
+          {
+            "source_id": "ftc",
+            "provision": "Truthful claims, privacy and consumer harm (issue-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          }
+        ]
+      },
+      {
+        "id": "ownership",
+        "title": "Accountability",
+        "status": "Evidence needed",
+        "owner": "Executive sponsor",
+        "evidence": [
+          "User answer ownership: unsure. Self-reported; no supporting document was inspected."
+        ],
+        "evidence_ids": [],
+        "needed": "Identify the accountable business owner, technical owner and escalation contact for each use.",
+        "deliverable": "A responsibility register linked to each use case.",
+        "verification": "Confirm named owners accept their responsibilities and can authorize a pause.",
+        "mappings": [
+          {
+            "source_id": "nist-rmf",
+            "provision": "GOVERN 2.1",
+            "relationship": "Partial supporting evidence only"
+          },
+          {
+            "source_id": "omb-25-21",
+            "provision": "AI governance and high-impact AI risk-management provisions (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          }
+        ]
+      },
+      {
+        "id": "use-cases",
+        "title": "Purpose, affected people and data flows",
+        "status": "Partial local evidence",
+        "owner": "Use-case owner",
+        "evidence": [
+          "obs-008: Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related setting present: False; enabled_tools list count: None; disabled_tools list count: None. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded.",
+          "User answer use_cases: unsure. Self-reported; no supporting document was inspected."
+        ],
+        "evidence_ids": [
+          "obs-008"
+        ],
+        "needed": "Document intended use, decisions influenced, affected people, deployment states, system role, inputs, outputs and destinations.",
+        "deliverable": "A per-use-case description and data-flow diagram, including local and remote integrations.",
+        "verification": "Walk through a real workflow with the owner; reconcile all data destinations and human decisions.",
+        "mappings": [
+          {
+            "source_id": "nist-rmf",
+            "provision": "MAP 1.1",
+            "relationship": "Partial supporting evidence only"
+          },
+          {
+            "source_id": "nist-genai",
+            "provision": "Sections 2\u20133: GenAI risks and suggested actions (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "omb-25-21",
+            "provision": "AI governance and high-impact AI risk-management provisions (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "omb-25-22",
+            "provision": "Acquisition, competition, interoperability and risk provisions (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "co-admt",
+            "provision": "Enacted-act summary: documentation, notice, human review and records (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "ca-admt",
+            "provision": "Approved text Articles 9\u201311; ADMT \u00a77200 and notice \u00a77220 (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "tx-traiga",
+            "provision": "Enrolled-bill summary: prohibited uses and specified disclosures (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          }
+        ]
+      },
+      {
+        "id": "vendors",
+        "title": "Vendor and connection assurance",
+        "status": "Partial local evidence",
+        "owner": "IT / procurement",
+        "evidence": [
+          "obs-008: Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related setting present: False; enabled_tools list count: None; disabled_tools list count: None. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded.",
+          "User answer vendor_review: unsure. Self-reported; no supporting document was inspected."
+        ],
+        "evidence_ids": [
+          "obs-008"
+        ],
+        "needed": "Review each vendor and MCP connection for purpose, owner, permissions, retention, model-training use, subprocessors and exit arrangements.",
+        "deliverable": "A vendor review with contract / DPA / BAA where applicable and dated access-setting evidence.",
+        "verification": "Compare reviewed terms and permissions with the actual account tier, configured server and allowed actions.",
+        "mappings": [
+          {
+            "source_id": "nist-rmf",
+            "provision": "GOVERN 6.1",
+            "relationship": "Partial supporting evidence only"
+          },
+          {
+            "source_id": "nist-genai",
+            "provision": "Sections 2\u20133: GenAI risks and suggested actions (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "omb-25-22",
+            "provision": "Acquisition, competition, interoperability and risk provisions (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "omb-26-04",
+            "provision": "Contract requirements and Appendix A implementation guidance (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "hipaa",
+            "provision": "HHS cloud guidance, questions 1\u20132 (issue-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "co-admt",
+            "provision": "Enacted-act summary: documentation, notice, human review and records (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          }
+        ]
+      },
+      {
+        "id": "human-review",
+        "title": "Human oversight and recourse",
+        "status": "Evidence needed",
+        "owner": "Operations owner",
+        "evidence": [
+          "User answer human_review: unsure. Self-reported; no supporting document was inspected."
+        ],
+        "evidence_ids": [],
+        "needed": "Identify decisions needing human checking, reviewers, authority to override, escalation and affected-person feedback routes.",
+        "deliverable": "An oversight procedure and a sampled record of review / override / appeal.",
+        "verification": "Run a tabletop case with incorrect output; demonstrate escalation and authorized override.",
+        "mappings": [
+          {
+            "source_id": "nist-rmf",
+            "provision": "GOVERN 3.2",
+            "relationship": "Partial supporting evidence only"
+          },
+          {
+            "source_id": "omb-25-21",
+            "provision": "AI governance and high-impact AI risk-management provisions (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "ftc",
+            "provision": "Truthful claims, privacy and consumer harm (issue-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "eeoc",
+            "provision": "AI assessment and disability / accommodation resources (issue-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "co-admt",
+            "provision": "Enacted-act summary: documentation, notice, human review and records (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "ca-admt",
+            "provision": "Approved text Articles 9\u201311; ADMT \u00a77200 and notice \u00a77220 (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "tx-traiga",
+            "provision": "Enrolled-bill summary: prohibited uses and specified disclosures (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "nyc-aedt",
+            "provision": "DCWP law / rule overview and FAQ (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          }
+        ]
+      },
+      {
+        "id": "testing",
+        "title": "Accuracy, safety and misuse evaluation",
+        "status": "Evidence needed",
+        "owner": "Technical / quality owner",
+        "evidence": [
+          "User answer testing: unsure. Self-reported; no supporting document was inspected."
+        ],
+        "evidence_ids": [],
+        "needed": "Obtain representative use-specific tests, expected results, failure limits and approval decisions; installation facts cannot establish model quality.",
+        "deliverable": "A versioned evaluation set and results covering errors, unsafe use, prompt injection and sensitive-output handling as relevant.",
+        "verification": "Reproduce selected tests on the approved system version and document failures and acceptance decisions.",
+        "mappings": [
+          {
+            "source_id": "nist-rmf",
+            "provision": "MEASURE 2.3",
+            "relationship": "Partial supporting evidence only"
+          },
+          {
+            "source_id": "nist-genai",
+            "provision": "Sections 2\u20133: GenAI risks and suggested actions (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "omb-25-21",
+            "provision": "AI governance and high-impact AI risk-management provisions (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "omb-26-04",
+            "provision": "Contract requirements and Appendix A implementation guidance (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "ftc",
+            "provision": "Truthful claims, privacy and consumer harm (issue-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "eeoc",
+            "provision": "AI assessment and disability / accommodation resources (issue-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "ca-admt",
+            "provision": "Approved text Articles 9\u201311; ADMT \u00a77200 and notice \u00a77220 (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          }
+        ]
+      },
+      {
+        "id": "fairness",
+        "title": "Fairness and accessibility evaluation",
+        "status": "Evidence needed",
+        "owner": "HR / domain / accessibility owner",
+        "evidence": [
+          "User answer fairness: unsure. Self-reported; no supporting document was inspected."
+        ],
+        "evidence_ids": [],
+        "needed": "Assess affected groups, accessibility, selection effects and accommodations; determine whether an independent statutory audit is required.",
+        "deliverable": "A population-appropriate evaluation and, where required, an independent audit and publication / notice records.",
+        "verification": "Have qualified reviewers check methods, affected populations, limitations and required independence.",
+        "mappings": [
+          {
+            "source_id": "nist-rmf",
+            "provision": "MEASURE 2.11",
+            "relationship": "Partial supporting evidence only"
+          },
+          {
+            "source_id": "eeoc",
+            "provision": "AI assessment and disability / accommodation resources (issue-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "tx-traiga",
+            "provision": "Enrolled-bill summary: prohibited uses and specified disclosures (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "nyc-aedt",
+            "provision": "DCWP law / rule overview and FAQ (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          }
+        ]
+      },
+      {
+        "id": "privacy",
+        "title": "Privacy and sensitive-data assessment",
+        "status": "Evidence needed",
+        "owner": "Privacy / security owner",
+        "evidence": [
+          "User answer privacy_review: unsure. Self-reported; no supporting document was inspected."
+        ],
+        "evidence_ids": [],
+        "needed": "Establish lawful / permitted data use, minimization, retention, access, transfers and handling of sensitive or regulated information.",
+        "deliverable": "A reviewed data assessment with account-setting evidence, retention decisions and required agreements.",
+        "verification": "Trace a representative input through storage, model processing, logs and deletion; verify documented restrictions.",
+        "mappings": [
+          {
+            "source_id": "nist-rmf",
+            "provision": "MEASURE 2.10",
+            "relationship": "Partial supporting evidence only"
+          },
+          {
+            "source_id": "nist-genai",
+            "provision": "Sections 2\u20133: GenAI risks and suggested actions (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "ftc",
+            "provision": "Truthful claims, privacy and consumer harm (issue-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "hipaa",
+            "provision": "HHS cloud guidance, questions 1\u20132 (issue-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "ca-admt",
+            "provision": "Approved text Articles 9\u201311; ADMT \u00a77200 and notice \u00a77220 (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "tx-traiga",
+            "provision": "Enrolled-bill summary: prohibited uses and specified disclosures (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          }
+        ]
+      },
+      {
+        "id": "security",
+        "title": "AI service and integration security",
+        "status": "Partial local evidence",
+        "owner": "IT / security owner",
+        "evidence": [
+          "obs-007: DEMO: recognized Ollama process on TCP 0.0.0.0:11434.",
+          "obs-008: Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related setting present: False; enabled_tools list count: None; disabled_tools list count: None. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded."
+        ],
+        "evidence_ids": [
+          "obs-007",
+          "obs-008"
+        ],
+        "needed": "Verify listener reachability, authentication, MCP permissions, approval boundaries and least privilege in a separately authorized review.",
+        "deliverable": "A service / integration access review with tested access boundaries; local binding alone is insufficient.",
+        "verification": "Validate intended access with the service owner, including remote-access and unauthorized-action tests in an approved environment.",
+        "mappings": [
+          {
+            "source_id": "nist-rmf",
+            "provision": "MEASURE 2.7",
+            "relationship": "Partial supporting evidence only"
+          }
+        ]
+      },
+      {
+        "id": "monitoring",
+        "title": "Monitoring, incidents and shutdown",
+        "status": "Evidence needed",
+        "owner": "Operations / security owner",
+        "evidence": [
+          "User answer monitoring: unsure. Self-reported; no supporting document was inspected."
+        ],
+        "evidence_ids": [],
+        "needed": "Define monitoring, incident reporting, periodic review, vendor-change review and how to pause / replace the system.",
+        "deliverable": "A monitoring plan, incident runbook, review schedule and tested rollback / shutdown record.",
+        "verification": "Exercise an incident scenario; confirm ownership, notification and safe fallback.",
+        "mappings": [
+          {
+            "source_id": "nist-rmf",
+            "provision": "MANAGE 4.1",
+            "relationship": "Partial supporting evidence only"
+          },
+          {
+            "source_id": "nist-genai",
+            "provision": "Sections 2\u20133: GenAI risks and suggested actions (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "omb-25-21",
+            "provision": "AI governance and high-impact AI risk-management provisions (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "omb-25-22",
+            "provision": "Acquisition, competition, interoperability and risk provisions (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "hipaa",
+            "provision": "HHS cloud guidance, questions 1\u20132 (issue-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "co-admt",
+            "provision": "Enacted-act summary: documentation, notice, human review and records (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          },
+          {
+            "source_id": "nyc-aedt",
+            "provision": "DCWP law / rule overview and FAQ (topic-level mapping)",
+            "relationship": "Authored topic association; not equivalent requirements"
+          }
+        ]
+      },
+      {
+        "id": "training",
+        "title": "User training",
+        "status": "Evidence needed",
+        "owner": "People / training owner",
+        "evidence": [
+          "User answer training: unsure. Self-reported; no supporting document was inspected."
+        ],
+        "evidence_ids": [],
+        "needed": "Teach permitted use, data handling, checking outputs and reporting unexpected AI behavior.",
+        "deliverable": "Role-specific training material and completion records.",
+        "verification": "Sample user understanding with a realistic data-handling and output-checking scenario.",
+        "mappings": [
+          {
+            "source_id": "nist-rmf",
+            "provision": "GOVERN 2.2",
+            "relationship": "Partial supporting evidence only"
+          }
+        ]
+      }
+    ],
+    "next_steps": [
+      "Resolve missing jurisdiction, sector, system-role and use-case context.",
+      "Address reported gaps and observed technical review items with the relevant owners.",
+      "Gather each work package\u2019s deliverable; have a qualified reviewer assess sufficiency and applicability.",
+      "Reconcile wider AI use and unmapped jurisdictions / sectors before treating this as an organizational assessment."
+    ]
+  },
   "limitations": [
     "Installed software or configuration does not establish actual use, ownership, approval or sensitive data handling.",
     "Browser-only AI, private accounts, remote hosts, unsupported applications and other users may be outside visibility.",
     "No subnet scan, exploit, inference request or production change is performed.",
     "Findings are automated checkup results, not professional sign-off, compliance certification or insurance advice.",
-    "No observed findings does not mean the computer or business is secure. Check the collection coverage."
+    "No observed findings does not mean the computer or business is secure. Check the collection coverage.",
+    "The bundled U.S. source catalog is selected and dated, not exhaustive or continuously updated. Crosswalks identify evidence work, not compliance."
   ],
   "demo": true
 }

@@ -1,0 +1,23 @@
+{
+  "work_use": "unsure",
+  "policy": "unsure",
+  "sensitive_data": "unsure",
+  "federal": "unsure",
+  "employment": "unsure",
+  "consequential": "unsure",
+  "health": "unsure",
+  "consumer": "unsure",
+  "colorado": "unsure",
+  "california": "unsure",
+  "texas": "unsure",
+  "nyc": "unsure",
+  "ownership": "unsure",
+  "use_cases": "unsure",
+  "vendor_review": "unsure",
+  "human_review": "unsure",
+  "testing": "unsure",
+  "fairness": "unsure",
+  "privacy_review": "unsure",
+  "monitoring": "unsure",
+  "training": "unsure"
+}

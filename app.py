@@ -10,8 +10,9 @@ import time
 from urllib.parse import urlsplit
 import webbrowser
 
-from collectors import collect
+from collectors import collect, extract_integrations
 from core import VERSION, analyze, compare, html_report, validate_baseline
+from crosswalk import CONTEXT_KEYS, QUESTIONS
 
 WEB = Path(getattr(sys, '_MEIPASS', Path(__file__).parent)) / 'web'
 
@@ -30,7 +31,7 @@ def demo_collect(options):
     if options.get('listeners'):
         observations.append({'kind':'listener','service':'Ollama','confirmed':True,'port':11434,'address':'0.0.0.0','evidence':'DEMO: recognized Ollama process on TCP 0.0.0.0:11434.'})
     if options.get('integrations'):
-        observations.append({'kind':'integration','service':'Claude Desktop','name':'demo-connection','evidence':'DEMO: one configured MCP connection. Not an observation of this computer.'})
+        observations.extend(extract_integrations({'mcpServers':{'demo-example':{'command':'example-tool'}}},'Claude Desktop'))
     return observations,coverage
 
 
@@ -55,7 +56,7 @@ def validate_request(body):
         raise ValueError('Collection options must be true or false.')
     if not any(options.values()): raise ValueError('Select at least one check.')
     context=body.get('context',{})
-    if not isinstance(context,dict) or set(context)-{'work_use','policy','sensitive_data'}:
+    if not isinstance(context,dict) or set(context)-CONTEXT_KEYS:
         raise ValueError('Invalid context answers.')
     if any(v not in ('yes','no','unsure') for v in context.values()):
         raise ValueError('Choose yes, no or unsure.')
@@ -111,7 +112,7 @@ class Handler(BaseHTTPRequestHandler):
         elif path=='/api/state':
             state=self.server.state
             with state.lock:
-                self.send(200,json.dumps({'running':state.running,'error':state.error,'report':state.report,'demo':state.demo,'version':VERSION}))
+                self.send(200,json.dumps({'running':state.running,'error':state.error,'report':state.report,'demo':state.demo,'version':VERSION,'questions':QUESTIONS}))
         elif path in ('/api/export.json','/api/export.html'):
             with self.server.state.lock:report=self.server.state.report
             if not report:self.error(409,'Complete a checkup before exporting.');return
@@ -178,9 +179,10 @@ def main():
     parser.add_argument('--output',type=Path,help='Write CLI JSON report to this new file.')
     parser.add_argument('--json',dest='json_report',type=Path,help='Write a new JSON report file.')
     parser.add_argument('--html',dest='html_report',type=Path,help='Write a new readable HTML report file.')
+    parser.add_argument('--context',type=Path,help='Use optional yes/no/unsure context answers from a selected JSON file (scan only).')
     args=parser.parse_args()
     scanning=args.scan or args.command=='scan'
-    if not scanning and (args.output or args.json_report or args.html_report):
+    if not scanning and (args.output or args.json_report or args.html_report or args.context):
         parser.error('Use scan or --scan with report output options.')
     if args.output and args.json_report:parser.error('Choose --json or legacy --output, not both.')
     if scanning:
@@ -191,8 +193,16 @@ def main():
         if any(p.exists() or not p.parent.is_dir() for p in outputs):
             parser.error('Output files must be new and their parent directories must already exist.')
         options={'installed':True,'running':True,'listeners':True,'integrations':args.integrations,'locations':args.locations}
+        context={}
+        if args.context:
+            try:
+                if args.context.stat().st_size > 65536:raise ValueError('Context is too large.')
+                context=json.loads(args.context.read_text(encoding='utf-8-sig'))
+                validate_request({'options':options,'context':context})
+            except (OSError,ValueError,TypeError,RecursionError):
+                parser.error('Context must be a JSON object of supported question keys and yes/no/unsure values, at most 64 KB. See examples/context-template.json.')
         obs,coverage=(demo_collect if args.demo else collect)(options)
-        report=analyze(obs,coverage,{});report['demo']=args.demo
+        report=analyze(obs,coverage,context);report['demo']=args.demo
         text=json.dumps(report,indent=2)
         try:
             if json_path:
@@ -210,6 +220,9 @@ def main():
                 if not report['inventory']:print('  No supported tools observed; review coverage before drawing conclusions.')
                 print(f'\n{len(report["findings"])} item(s) to review. No compliance or safety conclusion is implied.')
                 for f in report['findings']:print(f'  {f["title"]}\n    Next step: {f["action"]}')
+                cat=report['crosswalk']['catalog']
+                print(f'\nU.S. readiness catalog: {cat["freshness"]}; reviewed {cat["reviewed_at"]}. Selected coverage, not exhaustive.')
+                for c in report['crosswalk']['controls']:print(f'  {c["title"]}: {c["status"]} — suggested owner: {c["owner"]}')
                 for p in outputs:print(f'Saved: {p}')
         return 2 if any(c['status'] in ('partial','unavailable') for c in coverage) else 0
     server=make_server(args.port,args.demo)
