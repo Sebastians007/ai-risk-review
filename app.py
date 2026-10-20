@@ -109,9 +109,9 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         path=urlsplit(self.path).path
         if not self.allowed(path.startswith('/api/')):return
-        if path in ('/','/app.js','/style.css','/font.ttf'):
-            filename={'/':'index.html','/app.js':'app.js','/style.css':'style.css','/font.ttf':'font.ttf'}[path]
-            kind={'/':'text/html; charset=utf-8','/app.js':'text/javascript; charset=utf-8','/style.css':'text/css; charset=utf-8','/font.ttf':'font/ttf'}[path]
+        if path in ('/','/app.js','/theme.js','/style.css','/font.ttf'):
+            filename={'/':'index.html','/app.js':'app.js','/theme.js':'theme.js','/style.css':'style.css','/font.ttf':'font.ttf'}[path]
+            kind={'/':'text/html; charset=utf-8','/app.js':'text/javascript; charset=utf-8','/theme.js':'text/javascript; charset=utf-8','/style.css':'text/css; charset=utf-8','/font.ttf':'font/ttf'}[path]
             try:self.send(200,(WEB/filename).read_bytes(),kind)
             except OSError:self.error(500,'The packaged interface is unavailable.')
         elif path=='/api/state':

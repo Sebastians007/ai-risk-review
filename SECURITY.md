@@ -39,3 +39,5 @@ Document text is untrusted data. Matching is deterministic keyword search, never
 Only selected metadata / fingerprints and candidate excerpts persist in the report. Raw selected files and full extracted segments are not retained after processing. Reports stay in process memory; there is no secure deletion or encrypted export. Underlying browser / OS memory and downloads remain outside the app's control.
 
 Share-safe export rebuilds analysis after removing connection labels, the entire use-case profile and document metadata / excerpts. It still contains local tools, versions, configuration observations, screening answers and pseudonymous identifiers; it is not an anonymity guarantee. Never publish a report without reviewing its actual contents.
+
+Appearance preferences use one non-sensitive host-scoped cookie (System / Light / Dark), because the launcher port changes. The cookie is not used for authorization and contains no evidence or session token. API authorization still requires the per-launch token.

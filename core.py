@@ -5,7 +5,7 @@ import ipaddress
 import json
 from crosswalk import build_crosswalk
 
-VERSION = '0.4.0'
+VERSION = '0.4.1'
 
 
 def is_loopback(address):

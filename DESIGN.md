@@ -9,3 +9,5 @@ Use a persistent desktop side rail and compact mobile navigation. The preparatio
 Typography: locally served Manrope where available, with Segoe UI fallback. Body 15–16px, display 32–40px, strong labels and tabular counts. Use generous section spacing and compact evidence rows. Motion is limited to a subtle dashboard entrance and respects reduced motion.
 
 All HTML exports inherit the blue / white system, a summary first, compact reference links and a single evidence appendix to avoid repeating long observation text.
+
+Dark mode (v0.4.1): navy canvas, elevated slate surfaces, pale blue text and brighter link / status colors. Appearance offers System / Light / Dark, applied before paint. A non-sensitive host-scoped cookie preserves the choice across the launcher’s changing local ports. Selection does not affect report contents; exports remain optimized for reading / printing.

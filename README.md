@@ -2,17 +2,21 @@
 
 A downloadable Windows evidence workspace for nontechnical AI readiness reviews. Discover supported tools, add selected documents and context, follow evidence into work packages, and save a report. No account, cloud model or paid API is required.
 
-**v0.4.0 development preview.** Selected discovery and framework coverage, not an organization-wide audit, complete U.S. legal crosswalk or compliance certification.
+**v0.4.1 development preview.** Selected discovery and framework coverage, not an organization-wide audit, complete U.S. legal crosswalk or compliance certification.
 
 ## Download and run
 
-1. Download the [v0.4.0 Windows ZIP](https://github.com/Sebastians007/ai-risk-review/releases/download/v0.4.0/AI-Risk-Review-v0.4.0-windows-x64.zip) from the [prerelease](https://github.com/Sebastians007/ai-risk-review/releases/tag/v0.4.0).
+1. Download the [v0.4.1 Windows ZIP](https://github.com/Sebastians007/ai-risk-review/releases/download/v0.4.1/AI-Risk-Review-v0.4.1-windows-x64.zip) from the [prerelease](https://github.com/Sebastians007/ai-risk-review/releases/tag/v0.4.1).
 2. Extract the entire ZIP. **Keep AI-Risk-Review.exe and AI-Risk-Review-CLI.exe together**: the GUI uses the companion CLI for bounded document parsing.
 3. Open AI-Risk-Review.exe. Choose checks, add optional profile / answers / documents, then run.
 4. Review the overview, inventory, evidence library, readiness work and source limits.
 5. Save a local HTML / JSON report or a share-safe HTML report. Use **Close app** when done.
 
-Local builds are in dist/v0.4.0/. Older versioned builds remain; the root dist/ executable is v0.1. Executables are unsigned development previews. Follow Windows / organization software policies. Closing the browser tab alone does not immediately stop the process; inactive sessions expire after 30 minutes.
+Local builds are in dist/v0.4.1/. Older versioned builds remain; the root dist/ executable is v0.1. Executables are unsigned development previews. Follow Windows / organization software policies. Closing the browser tab alone does not immediately stop the process; inactive sessions expire after 30 minutes.
+
+## Appearance
+
+Use **Appearance** in the top bar to choose System, Light or Dark. System follows the operating system. Your explicit choice is stored as a non-sensitive browser cookie so it works across the launcher’s changing local ports. Blocking or clearing cookies resets the choice. This preference contains no report data. Exported reports retain their reading / print layout. [Dark-mode preview](docs/images/v041-dark-desktop.png).
 
 ## New in v0.4
 
