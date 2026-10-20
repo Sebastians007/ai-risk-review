@@ -1,0 +1,19 @@
+AI Risk Review uses these third-party components:
+
+Manrope font, distributed under the SIL Open Font License 1.1.
+Source: https://github.com/google/fonts/tree/main/ofl/manrope
+License: licenses/Manrope-OFL.txt
+
+pypdf 6.21.1, distributed under the BSD 3-Clause License.
+Source: https://github.com/py-pdf/pypdf
+License: licenses/pypdf-LICENSE.txt
+
+PyInstaller is build tooling, under GPL with the bootloader exception permitting
+distribution of built applications under their own license.
+Source: https://pyinstaller.org/en/stable/license.html
+
+The AI Risk Review project code remains MIT licensed. These notices do not
+change third-party licensing terms.
+
+Packaged Python runtime: Python Software Foundation license and notices,
+provided in licenses/Python-LICENSE.txt.

@@ -1,8 +1,8 @@
 {
   "format": "ai-risk-review",
   "schema_version": 1,
-  "app_version": "0.3.0",
-  "created_at": "2026-10-20T00:11:32.373108+00:00",
+  "app_version": "0.4.0",
+  "created_at": "2026-10-20T00:38:53.460966+00:00",
   "scope": "This Windows computer, current user and explicitly selected checks. Not an organization-wide assessment.",
   "observations": [
     {
@@ -65,7 +65,8 @@
       "auth_material_configured": false,
       "enabled_tools_count": null,
       "disabled_tools_count": null,
-      "evidence": "Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related setting present: False; enabled_tools list count: None; disabled_tools list count: None. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded.",
+      "evidence": "Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related field in this entry: not found; authentication may be managed elsewhere; enabled_tools list: not declared here; disabled_tools list: not declared here. These facts do not establish effective permissions or authentication. Endpoints and credential values are excluded.",
+      "connection_label": "demo-example",
       "id": "obs-008"
     }
   ],
@@ -89,7 +90,7 @@
       "evidence": [
         "DEMO: Claude installed record.",
         "DEMO: current-user Claude package record.",
-        "Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related setting present: False; enabled_tools list count: None; disabled_tools list count: None. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded."
+        "Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related field in this entry: not found; authentication may be managed elsewhere; enabled_tools list: not declared here; disabled_tools list: not declared here. These facts do not establish effective permissions or authentication. Endpoints and credential values are excluded."
       ]
     },
     {
@@ -158,8 +159,7 @@
     "work_use": "yes",
     "policy": "no",
     "sensitive_data": "yes",
-    "nyc": "yes",
-    "employment": "yes"
+    "consumer": "yes"
   },
   "findings": [
     {
@@ -179,11 +179,11 @@
     },
     {
       "id": "mcp:Claude Desktop:connection-226b2d0bcd2477b35a7c",
-      "title": "Review local command connection in Claude Desktop (1)",
+      "title": "Review local command connection in Claude Desktop (demo-example)",
       "priority": "Context needed",
       "basis": "Observed",
       "source": "integrations",
-      "evidence": "Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related setting present: False; enabled_tools list count: None; disabled_tools list count: None. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded.",
+      "evidence": "Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related field in this entry: not found; authentication may be managed elsewhere; enabled_tools list: not declared here; disabled_tools list: not declared here. These facts do not establish effective permissions or authentication. Endpoints and credential values are excluded.",
       "explanation": "An MCP connection is configured. These connections can extend an assistant\u2019s capabilities.",
       "limitation": "Configuration does not prove the connection is running, has broad permissions, or is unsafe. Command arguments, environment values, tokens and conversation contents are not included in this report.",
       "action": "Open %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers and locate entry 1 in the declared server table (file order, not sorted display order). Confirm its owner, purpose, allowed tools, data destinations and approval settings. Review command arguments locally; do not paste credentials into the report.",
@@ -332,8 +332,8 @@
         ],
         "provision": "Truthful claims, privacy and consumer harm (issue-level mapping)",
         "reviewed_at": "2026-10-19",
-        "applicability": "Needs context",
-        "reason": "Required screening answers are missing or unsure; do not infer non-applicability."
+        "applicability": "Potentially relevant",
+        "reason": "Screening answers match a review trigger; statutory definitions, thresholds, roles, exceptions and dates still need qualified review."
       },
       {
         "id": "eeoc",
@@ -349,8 +349,8 @@
         ],
         "provision": "AI assessment and disability / accommodation resources (issue-level mapping)",
         "reviewed_at": "2026-10-19",
-        "applicability": "Potentially relevant",
-        "reason": "Screening answers match a review trigger; statutory definitions, thresholds, roles, exceptions and dates still need qualified review."
+        "applicability": "Needs context",
+        "reason": "Required screening answers are missing or unsure; do not infer non-applicability."
       },
       {
         "id": "hipaa",
@@ -437,8 +437,8 @@
         ],
         "provision": "DCWP law / rule overview and FAQ (topic-level mapping)",
         "reviewed_at": "2026-10-19",
-        "applicability": "Potentially relevant",
-        "reason": "Screening answers match a review trigger; statutory definitions, thresholds, roles, exceptions and dates still need qualified review."
+        "applicability": "Needs context",
+        "reason": "Required screening answers are missing or unsure; do not infer non-applicability."
       }
     ],
     "controls": [
@@ -447,16 +447,7 @@
         "title": "AI system inventory",
         "status": "Partial local evidence",
         "owner": "AI program owner",
-        "evidence": [
-          "obs-001: DEMO: Ollama installed record.",
-          "obs-002: DEMO: Claude installed record.",
-          "obs-003: DEMO: LM Studio installed record.",
-          "obs-004: DEMO: current-user Claude package record.",
-          "obs-005: DEMO: ChatGPT running process, no listener required.",
-          "obs-006: DEMO: Codex running process, no listener required.",
-          "obs-007: DEMO: recognized Ollama process on TCP 0.0.0.0:11434.",
-          "obs-008: Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related setting present: False; enabled_tools list count: None; disabled_tools list count: None. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded."
-        ],
+        "evidence": [],
         "evidence_ids": [
           "obs-001",
           "obs-002",
@@ -481,7 +472,8 @@
             "provision": "AI governance and high-impact AI risk-management provisions (topic-level mapping)",
             "relationship": "Authored topic association; not equivalent requirements"
           }
-        ]
+        ],
+        "document_evidence_ids": []
       },
       {
         "id": "policy",
@@ -489,7 +481,7 @@
         "status": "Reported gap",
         "owner": "Business owner",
         "evidence": [
-          "User answer policy: no. Self-reported; no supporting document was inspected."
+          "User answer policy: no. Self-reported; supporting evidence has not been verified."
         ],
         "evidence_ids": [],
         "needed": "Obtain approved AI-use rules, prohibited data / uses and an exception process.",
@@ -506,15 +498,18 @@
             "provision": "Truthful claims, privacy and consumer harm (issue-level mapping)",
             "relationship": "Authored topic association; not equivalent requirements"
           }
+        ],
+        "document_evidence_ids": [
+          "evidence-001"
         ]
       },
       {
         "id": "ownership",
         "title": "Accountability",
-        "status": "Evidence needed",
+        "status": "Document candidate; review needed",
         "owner": "Executive sponsor",
         "evidence": [
-          "User answer ownership: unsure. Self-reported; no supporting document was inspected."
+          "User answer ownership: unsure. Self-reported; supporting evidence has not been verified."
         ],
         "evidence_ids": [],
         "needed": "Identify the accountable business owner, technical owner and escalation contact for each use.",
@@ -531,6 +526,9 @@
             "provision": "AI governance and high-impact AI risk-management provisions (topic-level mapping)",
             "relationship": "Authored topic association; not equivalent requirements"
           }
+        ],
+        "document_evidence_ids": [
+          "evidence-002"
         ]
       },
       {
@@ -539,8 +537,7 @@
         "status": "Partial local evidence",
         "owner": "Use-case owner",
         "evidence": [
-          "obs-008: Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related setting present: False; enabled_tools list count: None; disabled_tools list count: None. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded.",
-          "User answer use_cases: unsure. Self-reported; no supporting document was inspected."
+          "User answer use_cases: unsure. Self-reported; supporting evidence has not been verified."
         ],
         "evidence_ids": [
           "obs-008"
@@ -584,16 +581,16 @@
             "provision": "Enrolled-bill summary: prohibited uses and specified disclosures (topic-level mapping)",
             "relationship": "Authored topic association; not equivalent requirements"
           }
-        ]
+        ],
+        "document_evidence_ids": []
       },
       {
         "id": "vendors",
         "title": "Vendor and connection assurance",
-        "status": "Partial local evidence",
+        "status": "Document candidate; review needed",
         "owner": "IT / procurement",
         "evidence": [
-          "obs-008: Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related setting present: False; enabled_tools list count: None; disabled_tools list count: None. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded.",
-          "User answer vendor_review: unsure. Self-reported; no supporting document was inspected."
+          "User answer vendor_review: unsure. Self-reported; supporting evidence has not been verified."
         ],
         "evidence_ids": [
           "obs-008"
@@ -632,15 +629,18 @@
             "provision": "Enacted-act summary: documentation, notice, human review and records (topic-level mapping)",
             "relationship": "Authored topic association; not equivalent requirements"
           }
+        ],
+        "document_evidence_ids": [
+          "evidence-003"
         ]
       },
       {
         "id": "human-review",
         "title": "Human oversight and recourse",
-        "status": "Evidence needed",
+        "status": "Document candidate; review needed",
         "owner": "Operations owner",
         "evidence": [
-          "User answer human_review: unsure. Self-reported; no supporting document was inspected."
+          "User answer human_review: unsure. Self-reported; supporting evidence has not been verified."
         ],
         "evidence_ids": [],
         "needed": "Identify decisions needing human checking, reviewers, authority to override, escalation and affected-person feedback routes.",
@@ -687,6 +687,9 @@
             "provision": "DCWP law / rule overview and FAQ (topic-level mapping)",
             "relationship": "Authored topic association; not equivalent requirements"
           }
+        ],
+        "document_evidence_ids": [
+          "evidence-004"
         ]
       },
       {
@@ -695,7 +698,7 @@
         "status": "Evidence needed",
         "owner": "Technical / quality owner",
         "evidence": [
-          "User answer testing: unsure. Self-reported; no supporting document was inspected."
+          "User answer testing: unsure. Self-reported; supporting evidence has not been verified."
         ],
         "evidence_ids": [],
         "needed": "Obtain representative use-specific tests, expected results, failure limits and approval decisions; installation facts cannot establish model quality.",
@@ -737,7 +740,8 @@
             "provision": "Approved text Articles 9\u201311; ADMT \u00a77200 and notice \u00a77220 (topic-level mapping)",
             "relationship": "Authored topic association; not equivalent requirements"
           }
-        ]
+        ],
+        "document_evidence_ids": []
       },
       {
         "id": "fairness",
@@ -745,7 +749,7 @@
         "status": "Evidence needed",
         "owner": "HR / domain / accessibility owner",
         "evidence": [
-          "User answer fairness: unsure. Self-reported; no supporting document was inspected."
+          "User answer fairness: unsure. Self-reported; supporting evidence has not been verified."
         ],
         "evidence_ids": [],
         "needed": "Assess affected groups, accessibility, selection effects and accommodations; determine whether an independent statutory audit is required.",
@@ -772,15 +776,16 @@
             "provision": "DCWP law / rule overview and FAQ (topic-level mapping)",
             "relationship": "Authored topic association; not equivalent requirements"
           }
-        ]
+        ],
+        "document_evidence_ids": []
       },
       {
         "id": "privacy",
         "title": "Privacy and sensitive-data assessment",
-        "status": "Evidence needed",
+        "status": "Document candidate; review needed",
         "owner": "Privacy / security owner",
         "evidence": [
-          "User answer privacy_review: unsure. Self-reported; no supporting document was inspected."
+          "User answer privacy_review: unsure. Self-reported; supporting evidence has not been verified."
         ],
         "evidence_ids": [],
         "needed": "Establish lawful / permitted data use, minimization, retention, access, transfers and handling of sensitive or regulated information.",
@@ -817,6 +822,9 @@
             "provision": "Enrolled-bill summary: prohibited uses and specified disclosures (topic-level mapping)",
             "relationship": "Authored topic association; not equivalent requirements"
           }
+        ],
+        "document_evidence_ids": [
+          "evidence-005"
         ]
       },
       {
@@ -824,10 +832,7 @@
         "title": "AI service and integration security",
         "status": "Partial local evidence",
         "owner": "IT / security owner",
-        "evidence": [
-          "obs-007: DEMO: recognized Ollama process on TCP 0.0.0.0:11434.",
-          "obs-008: Claude Desktop: declared MCP entry 1 in %APPDATA%/Claude/claude_desktop_config.json \u2192 mcpServers; local command; activation state not verified; URL scheme: not configured; URL user-info present: False; auth-related setting present: False; enabled_tools list count: None; disabled_tools list count: None. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded."
-        ],
+        "evidence": [],
         "evidence_ids": [
           "obs-007",
           "obs-008"
@@ -841,15 +846,16 @@
             "provision": "MEASURE 2.7",
             "relationship": "Partial supporting evidence only"
           }
-        ]
+        ],
+        "document_evidence_ids": []
       },
       {
         "id": "monitoring",
         "title": "Monitoring, incidents and shutdown",
-        "status": "Evidence needed",
+        "status": "Document candidate; review needed",
         "owner": "Operations / security owner",
         "evidence": [
-          "User answer monitoring: unsure. Self-reported; no supporting document was inspected."
+          "User answer monitoring: unsure. Self-reported; supporting evidence has not been verified."
         ],
         "evidence_ids": [],
         "needed": "Define monitoring, incident reporting, periodic review, vendor-change review and how to pause / replace the system.",
@@ -891,6 +897,9 @@
             "provision": "DCWP law / rule overview and FAQ (topic-level mapping)",
             "relationship": "Authored topic association; not equivalent requirements"
           }
+        ],
+        "document_evidence_ids": [
+          "evidence-006"
         ]
       },
       {
@@ -899,7 +908,7 @@
         "status": "Evidence needed",
         "owner": "People / training owner",
         "evidence": [
-          "User answer training: unsure. Self-reported; no supporting document was inspected."
+          "User answer training: unsure. Self-reported; supporting evidence has not been verified."
         ],
         "evidence_ids": [],
         "needed": "Teach permitted use, data handling, checking outputs and reporting unexpected AI behavior.",
@@ -911,7 +920,8 @@
             "provision": "GOVERN 2.2",
             "relationship": "Partial supporting evidence only"
           }
-        ]
+        ],
+        "document_evidence_ids": []
       }
     ],
     "next_steps": [
@@ -929,5 +939,120 @@
     "No observed findings does not mean the computer or business is secure. Check the collection coverage.",
     "The bundled U.S. source catalog is selected and dated, not exhaustive or continuously updated. Crosswalks identify evidence work, not compliance."
   ],
+  "profile": {
+    "name": "Drafting customer replies (illustrative)",
+    "purpose": "Prepare drafts for human review using approved information.",
+    "role": "deployer",
+    "sector": "general",
+    "states": [
+      "NM"
+    ]
+  },
+  "documents": [
+    {
+      "id": "doc-1050d91835d74717",
+      "name": "demo-ai-policy.txt",
+      "sha256": "1050d91835d7471712b1a87dcc3bcea4c244a431503ad088385e8a57fd80fe31",
+      "bytes": 278,
+      "status": "read",
+      "detail": "Bounded text extraction; excerpts require review. No OCR, embedded objects or remote resources are processed."
+    }
+  ],
+  "document_evidence": [
+    {
+      "id": "evidence-001",
+      "document_id": "doc-1050d91835d74717",
+      "document_name": "demo-ai-policy.txt",
+      "control_id": "policy",
+      "locator": "line 2",
+      "excerpt": "AI policy: approved tools require an accountable owner and human review.",
+      "match": "ai policy",
+      "basis": "Keyword candidate; relevance and sufficiency unverified"
+    },
+    {
+      "id": "evidence-002",
+      "document_id": "doc-1050d91835d74717",
+      "document_name": "demo-ai-policy.txt",
+      "control_id": "ownership",
+      "locator": "line 2",
+      "excerpt": "AI policy: approved tools require an accountable owner and human review.",
+      "match": "accountable owner",
+      "basis": "Keyword candidate; relevance and sufficiency unverified"
+    },
+    {
+      "id": "evidence-003",
+      "document_id": "doc-1050d91835d74717",
+      "document_name": "demo-ai-policy.txt",
+      "control_id": "vendors",
+      "locator": "line 3",
+      "excerpt": "Vendor retention and sensitive data handling require privacy assessment.",
+      "match": "retention",
+      "basis": "Keyword candidate; relevance and sufficiency unverified"
+    },
+    {
+      "id": "evidence-004",
+      "document_id": "doc-1050d91835d74717",
+      "document_name": "demo-ai-policy.txt",
+      "control_id": "human-review",
+      "locator": "line 2",
+      "excerpt": "AI policy: approved tools require an accountable owner and human review.",
+      "match": "human review",
+      "basis": "Keyword candidate; relevance and sufficiency unverified"
+    },
+    {
+      "id": "evidence-005",
+      "document_id": "doc-1050d91835d74717",
+      "document_name": "demo-ai-policy.txt",
+      "control_id": "privacy",
+      "locator": "line 3",
+      "excerpt": "Vendor retention and sensitive data handling require privacy assessment.",
+      "match": "sensitive data",
+      "basis": "Keyword candidate; relevance and sufficiency unverified"
+    },
+    {
+      "id": "evidence-006",
+      "document_id": "doc-1050d91835d74717",
+      "document_name": "demo-ai-policy.txt",
+      "control_id": "monitoring",
+      "locator": "line 4",
+      "excerpt": "An incident response and shutdown procedure should be documented.",
+      "match": "incident response",
+      "basis": "Keyword candidate; relevance and sufficiency unverified"
+    }
+  ],
+  "privacy_mode": "local-detail",
+  "summary": {
+    "tools": 5,
+    "observations": 8,
+    "review_items": 4,
+    "document_candidates": 6,
+    "evidence_needed": 3,
+    "reported_gaps": 1,
+    "sources_needing_context": 9,
+    "documents_incomplete": 0,
+    "actions": [
+      {
+        "title": "Ollama listens beyond loopback",
+        "detail": "If remote access is unnecessary, ask the service owner to restrict the listening address to loopback. Otherwise review firewall restrictions and authentication. Do not change a shared service without its owner.",
+        "target": "findings"
+      },
+      {
+        "title": "Document permitted work use of AI",
+        "detail": "Agree which tools and data types are permitted, who approves exceptions and when outputs need human checking.",
+        "target": "findings"
+      },
+      {
+        "title": "Check the conditions for sensitive information",
+        "detail": "Have the responsible owner confirm permitted information, retention, training settings and contractual protections before further sensitive use.",
+        "target": "findings"
+      },
+      {
+        "title": "Resolve applicability questions",
+        "detail": "9 source entries still need context. Confirm affected jurisdictions, sector, system role and use.",
+        "target": "sources"
+      }
+    ],
+    "note": "These are collection and review counts, not a security or compliance score."
+  },
   "demo": true
 }

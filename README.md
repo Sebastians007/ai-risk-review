@@ -1,106 +1,109 @@
 # AI Risk Review
 
-A Windows-first, local AI checkup for people who want understandable findings and evidence. Download a portable release, launch it, choose read-only checks and save a report. No account, Python installation, Docker, paid API or language model is required by the packaged app.
+A downloadable Windows evidence workspace for nontechnical AI readiness reviews. Discover supported tools, add selected documents and context, follow evidence into work packages, and save a report. No account, cloud model or paid API is required.
 
-**Status: v0.3.0 development preview.** Narrow, documented coverage. Not a compliance audit, proof of organization-wide shadow AI discovery, or a substitute for qualified review. This project is not claimed to be the first AI discovery tool.
+**v0.4.0 development preview.** Selected discovery and framework coverage, not an organization-wide audit, complete U.S. legal crosswalk or compliance certification.
 
-v0.3 adds a selected, dated U.S. readiness catalog, a structured optional interview, 12 evidence work packages and traceable crosswalks in HTML / JSON. It also retains safe package-version evidence and richer opt-in MCP setting facts. Discovery from v0.2 remains: current-user Windows packages, running applications, local listeners, supported MCP configurations and named directories. Observations never establish approval or compliance.
+## Download and run
 
-## Run the portable Windows build
+1. Download the [v0.4.0 Windows ZIP](https://github.com/Sebastians007/ai-risk-review/releases/download/v0.4.0/AI-Risk-Review-v0.4.0-windows-x64.zip) from the [prerelease](https://github.com/Sebastians007/ai-risk-review/releases/tag/v0.4.0).
+2. Extract the entire ZIP. **Keep AI-Risk-Review.exe and AI-Risk-Review-CLI.exe together**: the GUI uses the companion CLI for bounded document parsing.
+3. Open AI-Risk-Review.exe. Choose checks, add optional profile / answers / documents, then run.
+4. Review the overview, inventory, evidence library, readiness work and source limits.
+5. Save a local HTML / JSON report or a share-safe HTML report. Use **Close app** when done.
 
-1. Download and extract the [v0.3.0 Windows ZIP](https://github.com/Sebastians007/ai-risk-review/releases/download/v0.3.0/AI-Risk-Review-v0.3.0-windows-x64.zip) from the [prerelease page](https://github.com/Sebastians007/ai-risk-review/releases/tag/v0.3.0).
-2. Double-click `AI-Risk-Review.exe`. A private local interface opens in your default browser. Locally built binaries are in `dist/v0.3.0/`; the earlier root `dist/` executable is the old v0.1 preview.
-3. Choose checks, optionally add context, then run the checkup.
-4. Review coverage and findings. Save the HTML report to read or print, and JSON for a future comparison.
-5. Use **Close app** when done. Closing the browser tab alone does not immediately stop the local process; an inactive session expires after 30 minutes.
+Local builds are in dist/v0.4.0/. Older versioned builds remain; the root dist/ executable is v0.1. Executables are unsigned development previews. Follow Windows / organization software policies. Closing the browser tab alone does not immediately stop the process; inactive sessions expire after 30 minutes.
 
-The development executable is unsigned. Windows may show an unrecognized-publisher warning. Public release signing and broader compatibility validation remain future work. Do not bypass your organization's software policies.
+## New in v0.4
 
-## What it checks
+- Complete white / blue / navy dashboard redesign, responsive navigation and matching HTML reports.
+- Actual collection counts and prioritized actions, without a security percentage.
+- One optional profile per review: purpose, role, area and multiple affected U.S. states.
+- Relevant follow-up prompts, with a switch to show all questions. Unknown remains unknown.
+- Explicit opt-in for supported MCP connection labels in local reports.
+- Selected documents with candidate excerpts and page / paragraph / line references.
+- Searchable evidence, work-package filters and references instead of repeated observations.
+- Share-safe export rebuilt without connection labels, profile or document names / excerpts.
+- Matching CLI profile, document and export options.
 
-- **Installed applications:** Selected current-user and machine uninstall registry locations. Recognized names include Ollama, LM Studio, ChatGPT, Claude, Cursor, Windsurf, GPT4All, AnythingLLM, Cherry Studio and Jan. It does not enumerate every Store application, portable installation or browser service.
-- **Windows packages:** Current-user `Get-AppxPackage` records matched to explicitly supported names, including Claude and OpenAI.Codex. It does not inspect other users or identify every package by keyword.
-- **Running applications:** `Get-Process` names matched independently of listeners. Supported identities now include ChatGPT and Codex. Only recognized tool names and counts are retained, not command lines or environment values. Process names can be spoofed.
-- **Local TCP listeners:** English Windows `netstat` records matched to a small set of recognized process names. Generic ports alone never identify AI. Non-loopback bindings produce a review item, not a claim of internet exposure. Authentication, remote reachability, firewall rules and application behavior are not tested. Process names can be spoofed, so these are identity hints, not cryptographic product verification.
-- **Optional MCP settings:** Known Claude Desktop, Cursor, VS Code and Windsurf JSON paths, plus Codex `config.toml` under `CODEX_HOME` or the default `.codex` directory. Codex's explicitly declared `mcp_servers` table is parsed; plugin-managed connections and alternate profiles are outside visibility. JSON-with-comments is not parsed. Configuration file presence is reported even when no supported connections are declared. Connection transport, entry position, source alias, URL scheme, presence of URL user-info / auth-related fields and supported tool-list counts are extracted. Explicit disabled state is interpreted only for the supported Codex `enabled=false` setting; other clients remain unverified. HTTP / URL-user-info settings generate a transport review without exposing endpoints or credentials. Arguments, environment values, URLs, headers and raw connection names are not exported. Source files can contain secrets and are parsed in local memory when you explicitly select this option. Connection identifiers are pseudonymous hashes for repeat-run matching. Common names may be guessed by hashing candidates; these identifiers are not strong anonymization.
-- **Optional known locations:** Presence checks for seven fixed tool directories, with no recursion or content inspection. An artifact may be a leftover and does not establish an active installation. Paths are not exported.
-- **Optional context:** 21 yes/no/unsure questions, grouped into use, applicability screening and evidence assertions. Skip any answer. These are self-reported statements; documents and legal applicability are not independently verified.
+[Desktop preview](docs/images/v04-overview-desktop.png) · [Mobile preview](docs/images/v04-overview-mobile.png)
 
-Unsupported tools, other users, SaaS-only use and restricted data sources may be missed. An unavailable check stays unavailable. No observed findings is not a clean bill of health.
+## Discovery coverage
 
-## U.S. readiness crosswalk
+Supported traditional uninstall records and current-user Windows packages; recognized process names / counts; English Windows TCP listener records matched to supported process names; optional fixed MCP JSON / Codex TOML settings; optional presence checks for seven named tool directories.
 
-The initial catalog contains **12 selected source entries and 12 authored evidence work packages**, reviewed October 19, 2026. It covers NIST AI RMF 1.0 / GenAI Profile; OMB M-25-21, M-25-22 and M-26-04; FTC consumer protection; EEOC ADA resources; HIPAA cloud guidance; Colorado SB26-189; California ADMT regulations; Texas HB149; and NYC Local Law 144.
+Generic names or ports never establish AI identity. No executable paths, command lines, environment inventory, conversations, browser history, subnet scan, network probes or remediation. Process names can be spoofed. Supported versions are installation facts, not vulnerability assessments.
 
-This is **not all U.S. AI frameworks, policies or laws**, and not the full NIST framework. The report explicitly lists excluded sectors and jurisdictions. Topic associations are authored readiness aids, not official equivalence assertions or a requirement-by-requirement legal analysis. Internal policies and contracts require separately supplied evidence. State nexus includes affected people and activities, not just computer location. Federal contractors must examine actual agency instructions and contract clauses.
+MCP exports source alias, entry position, transport, selected booleans and list counts. Raw commands, arguments, full URLs, credential values, headers and environment values remain excluded. Connection labels are omitted by default and can reveal customer / project names when explicitly enabled. Restricted-character / sensitive-looking label filtering is not a comprehensive secret detector. Only known Codex enabled=false semantics establish configured disablement; profiles and runtime overrides remain unverified. Auth-field absence does not establish missing authentication; an undeclared tool list does not mean zero permissions.
 
-Each work package has linked observation IDs, a reported / partial / missing evidence state, suggested owner, missing artifacts, a deliverable and a verification procedure. A yes answer never becomes verified evidence. No answer or unavailable collector becomes a pass. An outside-trigger label is only screening, not a legal exemption. Evidence IDs identify rows within one report, not stable records across runs.
+Browser-only services, SaaS, private accounts, other users, unsupported tools and remote hosts can be missed. Complete collection means selected checks ran, not complete organizational coverage.
 
-The bundled catalog works offline. It shows the source review date and a 30-day review deadline, then flags review overdue. It does **not** fetch or continuously validate legal updates. Even within that window, sources may change. Colorado's replacement law and upcoming 2027 duties, California's phased compliance dates and M-26-04's sunset are explicitly noted.
+## Selected documents
 
-To use the interview from a terminal, copy `examples/context-template.json`, set relevant values to `yes`, `no` or `unsure`, then run:
+Choose up to **6 files, 1 MB each / 4 MB total**: UTF-8 TXT / Markdown / HTML, DOCX or text-based PDF. Files are parsed locally in a worker with a 12-second timeout and 512 MB process memory budget. Keep both executables together; if the parser cannot run safely, document extraction is unavailable.
 
-```powershell
-.\AI-Risk-Review-CLI.exe scan --integrations --context context.json --html report.html --json report.json
-```
+Limits: at most 100 PDF pages, 1,000 retained segments, 160,000 retained characters per file and 6,000 characters per segment. Extraction may be partial. No OCR, decryption, macros, attachment processing, script execution or remote fetching. DOCX main-body text is read; headers, footnotes, comments and image-only content can be missed. HTML locators are extracted text blocks, not original HTML line numbers; PDF page numbers are physical pages, not necessarily printed labels.
 
-Context files are selected explicitly, read locally and limited to 64 KB; unsupported keys and values are rejected before collection. Reports retain these answers and may reveal business context. Do not put secrets or personal records in this file.
+Keyword matching offers up to two excerpts per work package per document. Every excerpt is a **candidate requiring review** for context, negation, dates, approval, actual implementation and sufficiency. No match does not prove missing evidence. Document instructions never execute or change rules.
 
-Next steps toward broader coverage: explicit document selection and evidence references, per-use-case / multi-state profiles, additional sector and jurisdiction packs, and reviewed source updates. These are planned, not included in this preview.
+Only document metadata / fingerprints and candidate excerpts enter the report. Full extracted segments are discarded after candidate generation. Source files remain unchanged. Avoid unnecessary sensitive records.
 
-## Privacy and behavior
+**Demo mode replaces local discovery only; explicitly selected documents are still parsed locally.**
 
-The application makes no telemetry or cloud API calls. It binds to `127.0.0.1` on an available port. The launcher gives your browser a random per-session token; the interface keeps it in that tab's session storage. Do not share the private launch URL. Source observations and reports remain in process memory until the process exits or you download a report. The default browser and its extensions, sync, download history and caches are outside this application's control. Downloads are not encrypted by the app: save them in a suitable location and review before sharing.
+## U.S. readiness coverage
 
-No conversations, arbitrary user documents, environment-variable inventories or browsing history are collected. There are no subnet scans, network probes, exploit attempts or remediation changes. The collectors run read-only Windows commands with bounded timeouts. Administrator rights are not requested.
+12 selected primary-source entries and 12 authored evidence work packages, reviewed October 19, 2026: NIST AI RMF / GenAI Profile; OMB M-25-21, M-25-22 and M-26-04; selected FTC, EEOC ADA and HIPAA cloud issues; Colorado SB26-189; California ADMT regulations; Texas HB149; NYC Local Law 144.
 
-## Comparison
+Not all U.S. frameworks / laws / policies, the full NIST framework or an official equivalence crosswalk. Internal policies and contracts need their own review. Unmapped sectors / jurisdictions are explicitly listed. Packages link evidence and define missing artifacts, suggested owner roles, deliverables and verification.
 
-Import a previously exported JSON report before a new check. The app compares finding identifiers and reports new, matching and no-longer-observed items. It does not declare a missing finding resolved: scope, access or user answers may have changed. Sample and live reports cannot be compared. Reports are not cryptographically signed; compare only reports you trust.
+Screening matches mean potentially relevant, not legally applicable. Negative answers are not exemptions. Explicit profile selections supply positive CA / CO / TX and employment hints unless an answer overrides them. New York does not establish NYC, health care does not establish HIPAA, and government does not establish federal work.
 
-## Run from source
+The offline catalog shows a 30-day scheduled review deadline, then review overdue. It does **not** check live legal updates; sources can change inside the window. No package is marked independently verified or compliant.
 
-Python 3.11+ on Windows; runtime uses the standard library. Development was verified on Python 3.14.5 / Windows.
+## Reports and privacy
 
-```powershell
-python app.py
-python app.py --demo
-python app.py --scan --output my-checkup.json
-python app.py --scan --integrations --output my-checkup-with-mcp.json
-python app.py scan --html report.html --json report.json
-python app.py scan --integrations --locations --html full-report.html --json full-report.json
-python -m unittest discover -s tests -v
-```
+The app binds only to 127.0.0.1, requires a random per-launch API token and validates Host / Origin. Do not share the private launch URL or forward the port. No telemetry, cloud API, inference request or automatic fixes.
 
-`--scan` is the explicit authorization to collect the selected local records. `--demo` uses illustrative data and does not inspect the computer. CLI output files are created exclusively; existing files are not silently overwritten. Use `--no-browser` to print a private local session address for manual opening.
+Reports remain in memory until replaced / the app exits, or until you save a copy. Browser extensions, sync and downloads are outside app control. Downloads are unencrypted.
 
-For the packaged terminal experience, open PowerShell in the extracted release folder:
+- **Local reports** can contain optional connection labels, profile details, document names, fingerprints and excerpts.
+- **Share-safe reports** rebuild analysis without those details. Tools, versions, security observations, screening answers and pseudonymous connection identifiers remain. They are not guaranteed anonymous or suitable for public posting.
 
-```powershell
-.\AI-Risk-Review-CLI.exe scan --html report.html --json report.json
-```
+Finding-ID comparison supports older schema-1 reports. A missing ID is not verified resolution; scope, access and answers can change. Observation IDs belong to one report. Sample / live discovery cannot be compared. Evidence is not cryptographically signed.
 
-Add `--integrations` or `--locations` to opt into those checks. Exit code 0 means selected collectors finished, not that the computer is safe. Exit code 2 means input/output validation failed or a collector was partial/unavailable; an incomplete report can still be exported with its limitations. The GUI executable supports report-writing flags too, but use the CLI executable for visible terminal output. Output paths must be distinct new files with existing parent folders.
+## Terminal use
 
-## Build
+    .\AI-Risk-Review-CLI.exe scan --html report.html --json report.json
+    .\AI-Risk-Review-CLI.exe scan --integrations --connection-names --profile profile.json --context context.json --evidence policy.pdf --html local.html
+    .\AI-Risk-Review-CLI.exe scan --evidence policy.docx --share-safe --html share.html --json share.json
 
-```powershell
-python -m pip install -r requirements-build.txt
-./build.ps1
-```
+Repeat --evidence for multiple files. Templates: examples/profile-template.json and examples/context-template.json. --locations adds named-directory checks. Profile / context JSON files are allowlisted and at most 64 KB. --connection-names requires --integrations. Legacy --scan --output report.json remains supported.
 
-Build tooling is pinned independently of the dependency-free runtime. Run the build from this project folder on Windows. The script runs tests, packages the web assets with PyInstaller and creates a ZIP plus SHA-256 checksum under `releases/`. Build results are environment-specific; rebuilding need not produce byte-identical files.
+Outputs must be distinct new files with existing parent folders. Exit 0 means selected collection / extraction finished, not safety. Exit 2 means invalid inputs / outputs or partial / unavailable evidence; an incomplete report may still be saved with limits.
 
-## Design and contribution
+## Source and build
 
-`crosswalk.py` contains the source catalog, interview and authored evidence mappings; `core.py` contains deterministic findings and escaped report rendering; `collectors.py` handles evidence; `app.py` protects the local HTTP boundary; `web/` is the guided interface. See `docs/implementation-plan.md` and `SECURITY.md`.
+Python 3.11+ on Windows. Core uses the standard library; PDF extraction uses pinned pypdf.
 
-Add collectors through fixtures and documented limits, not broad name/port guesses. Test generic-port false positives, restricted access, malformed files and secret exclusion. Every finding needs an evidence statement, an uncertainty statement, a concrete action and a way to check improvement.
+    python -m pip install -r requirements.txt
+    python app.py
+    python app.py --demo
+    python app.py scan --demo --evidence examples/demo-ai-policy.txt --html demo.html
+    python -m unittest discover -s tests -v
+    python -m venv .venv-build
+    .\.venv-build\Scripts\python.exe -m pip install -r requirements-build.txt
+    .\build.ps1
 
-Related projects worth studying include [Julius](https://github.com/praetorian-inc/julius), [Shadow AI Guard](https://github.com/AmanSK5/shadow-ai-guard), and [Nexus ShadowScan](https://github.com/aisecnomad/Nexus-ShadowScan). This implementation was written for this project; no code from those repositories was incorporated.
+Build uses .venv-build when present to avoid bundling unrelated installed packages. It runs tests, bundles both executables / web assets and creates ZIP / SHA-256 under releases/. Outputs are environment-specific. Third-party licenses are in licenses/ and THIRD_PARTY_NOTICES.txt.
 
-[Apotrope](https://github.com/hexorcist404/apotrope) informed the modular terminal-auditor direction. This app does not bundle it or copy its checks; it implements a smaller AI-focused discovery workflow.
+## Project and contribution
 
-License: MIT. Maintained by [Sebastians007](https://github.com/Sebastians007).
+Collectors: collectors.py. Profiles / documents / privacy: workspace.py. Catalog: crosswalk.py. Findings / comparison: core.py. HTML: reporting.py. HTTP / CLI: app.py. Interface: web/.
 
-The [app plan](docs/app-plan.html), [v0.3 implementation plan](docs/v03-plan.md) and [verification record](docs/v03-verification.md) document the direction and tested limits. Download the HTML plan to open it in a browser. Windows builds are published as development prereleases, not signed stable releases.
+See [v0.4 plan](docs/v04-plan.md), [verification](docs/v04-verification.md), [app plan](docs/app-plan.html) and [security notes](SECURITY.md). Report vulnerabilities through [private security reporting](https://github.com/Sebastians007/ai-risk-review/security/advisories/new), without customer reports or credentials in public issues.
+
+Future: multiple use cases / organizations, reviewer decisions, richer matching, additional sector / jurisdiction packs, reviewed source updates, authorized enterprise connectors, signing and broader compatibility validation.
+
+Related tools: [Julius](https://github.com/praetorian-inc/julius), [Shadow AI Guard](https://github.com/AmanSK5/shadow-ai-guard), [Nexus ShadowScan](https://github.com/aisecnomad/Nexus-ShadowScan), [Apotrope](https://github.com/hexorcist404/apotrope). No first-of-kind claim; their code is not bundled.
+
+MIT. Maintained by [Sebastians007](https://github.com/Sebastians007).

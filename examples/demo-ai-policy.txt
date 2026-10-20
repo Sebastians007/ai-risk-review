@@ -1,0 +1,4 @@
+DEMO ONLY: illustrative input, not an actual approved policy.
+AI policy: approved tools require an accountable owner and human review.
+Vendor retention and sensitive data handling require privacy assessment.
+An incident response and shutdown procedure should be documented.

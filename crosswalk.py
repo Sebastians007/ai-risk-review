@@ -187,7 +187,7 @@ def build_crosswalk(observations, coverage, context, today=None):
         status = 'Reported gap' if claim == 'no' else 'Reported; verify evidence' if claim == 'yes' else 'Partial local evidence' if related else 'Evidence needed'
         evidence = [f"{o.get('id', 'unassigned')}: {o['evidence']}" for o in related]
         if answer:
-            evidence.append(f'User answer {answer}: {claim}. Self-reported; no supporting document was inspected.')
+            evidence.append(f'User answer {answer}: {claim}. Self-reported; supporting evidence has not been verified.')
         if not related and not answer:
             evidence.append('No matching local evidence collected. This is not evidence that a control is absent.')
         mappings = [{'source_id': 'nist-rmf', 'provision': provision, 'relationship': 'Partial supporting evidence only'}]

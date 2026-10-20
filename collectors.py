@@ -160,7 +160,7 @@ def listeners():
     return obs, {'id':'listeners','status':'complete','detail':'Matched current TCP listeners to supported running process names. No network probes were sent. Firewall reachability, authentication and remote hosts were not tested.'}
 
 
-def extract_integrations(data, app):
+def extract_integrations(data, app, include_names=False):
     if not isinstance(data,dict): raise ValueError('Expected a JSON object.')
     servers = data.get('mcpServers', data.get('servers', {}))
     if not isinstance(servers,dict): raise ValueError('Unrecognized MCP configuration structure.')
@@ -195,16 +195,22 @@ def extract_integrations(data, app):
                        'entry_index':index,'transport':connection,'enabled_state':state,
                        'config_reference':reference,'url_scheme':scheme,'url_credentials_present':credentials,
                        'auth_material_configured':auth,'enabled_tools_count':allowed_count,'disabled_tools_count':blocked_count,
-                       'evidence':f'{app}: declared MCP entry {index} in {reference}; {connection}; {state}; URL scheme: {scheme}; URL user-info present: {credentials}; auth-related setting present: {auth}; enabled_tools list count: {allowed_count}; disabled_tools list count: {blocked_count}. These are configuration facts, not effective permissions or proof of authentication. Raw identities and secret values are excluded.'})
+                       'evidence':f'{app}: declared MCP entry {index} in {reference}; {connection}; {state}; URL scheme: {scheme}; URL user-info present: {credentials}; auth-related field in this entry: {"present" if auth else "not found; authentication may be managed elsewhere"}; enabled_tools list: {str(allowed_count)+" entries" if allowed_count is not None else "not declared here"}; disabled_tools list: {str(blocked_count)+" entries" if blocked_count is not None else "not declared here"}. These facts do not establish effective permissions or authentication. Endpoints and credential values are excluded.'})
+        if include_names:
+            label=str(name)
+            if re.fullmatch(r'[A-Za-z0-9_. -]{1,80}', label) and not re.search(r'(?i)(sk-|gh[pousr]_|bearer|password|token=)', label):
+                result[-1]['connection_label']=label
+            else:
+                result[-1]['connection_label']='Label omitted: unsupported or sensitive-looking text'
     return result
 
 
-def extract_codex(text):
+def extract_codex(text, include_names=False):
     data=tomllib.loads(text)
-    return extract_integrations({'mcpServers':data.get('mcp_servers',{})},'Codex')
+    return extract_integrations({'mcpServers':data.get('mcp_servers',{})},'Codex',include_names)
 
 
-def integrations():
+def integrations(include_names=False):
     appdata=Path(os.environ.get('APPDATA',Path.home()/'AppData/Roaming'))
     targets=[('Claude Desktop',appdata/'Claude/claude_desktop_config.json'),
              ('Cursor',Path.home()/'.cursor/mcp.json'),
@@ -216,7 +222,7 @@ def integrations():
         try:
             if path.stat().st_size>1024*1024:failed+=1;continue
             text=path.read_text(encoding='utf-8-sig')
-            found=extract_codex(text) if app=='Codex' else extract_integrations(json.loads(text),app)
+            found=extract_codex(text,include_names) if app=='Codex' else extract_integrations(json.loads(text),app,include_names)
             obs.append({'kind':'configuration','service':app,'evidence':f'{app}: supported configuration file read; {len(found)} explicitly declared MCP connection(s). Other integrations, profiles and runtime permissions were not assessed.'})
             obs.extend(found);read+=1
         except FileNotFoundError:missing+=1
@@ -243,7 +249,7 @@ def known_locations():
     return obs,{'id':'locations','status':'partial' if failed else 'complete','detail':f'Checked {len(targets)} fixed directory locations without recursion or reading contents; {len(obs)} supported matches, {failed} unavailable. Other locations are outside coverage.'}
 
 
-def collect(options):
+def collect(options, include_names=False):
     observations=[];coverage=[]
     for id, function in [('installed',installed_apps),('packages',packages),('running',running),('listeners',listeners),('integrations',integrations),('locations',known_locations)]:
         selected=options.get('installed') if id=='packages' else options.get(id)
@@ -252,7 +258,8 @@ def collect(options):
         if sys.platform != 'win32':
             coverage.append({'id':id,'status':'unavailable','detail':'This preview supports Windows only.'});continue
         try:
-            obs,status=function();observations.extend(obs);coverage.append(status)
+            obs,status=function(include_names=include_names) if id=='integrations' else function()
+            observations.extend(obs);coverage.append(status)
         except (OSError,ValueError,RuntimeError,subprocess.TimeoutExpired):
             coverage.append({'id':id,'status':'unavailable','detail':'Could not complete this check. It may be unavailable, restricted or unsupported. No absence or safety conclusion is implied.'})
     return observations,coverage
